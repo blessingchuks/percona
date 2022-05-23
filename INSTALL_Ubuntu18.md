@@ -70,7 +70,7 @@ cat >>/etc/mysql/my.cnf<<EOF
 wsrep_provider=/usr/lib/libgalera_smm.so
 wsrep_cluster_name=democluster
 wsrep_cluster_address=gcomm://172.31.80.98,172.31.30.1
-wsrep_node_name=centosvm02
+wsrep_node_name=node2
 wsrep_node_address=172.31.30.1
 wsrep_sst_method=xtrabackup-v2
 wsrep_sst_auth=repuser:reppassword
