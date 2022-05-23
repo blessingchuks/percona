@@ -84,3 +84,37 @@ EOF
 ```
 systemctl start mysql
 ```
+
+### On third node
+##### Add Percona Repository
+```
+wget https://repo.percona.com/apt/percona-release_0.1-6.$(lsb_release -sc)_all.deb
+dpkg -i percona-release_0.1-6.$(lsb_release -sc)_all.deb
+```
+##### Install Percona-XtraDB-Cluster
+```
+apt-get update
+apt-get install -y percona-xtradb-cluster-57
+systemctl stop mysql
+```
+##### Configure Replication Settings
+```
+cat >>/etc/mysql/my.cnf<<EOF
+[mysqld]
+wsrep_provider=/usr/lib/libgalera_smm.so
+wsrep_cluster_name=democluster
+wsrep_cluster_address=gcomm://172.31.80.98,172.31.39.117
+wsrep_node_name=node3
+wsrep_node_address=172.31.39.117
+wsrep_sst_method=xtrabackup-v2
+wsrep_sst_auth=repuser:reppassword
+pxc_strict_mode=ENFORCING
+binlog_format=ROW
+default_storage_engine=InnoDB
+innodb_autoinc_lock_mode=2
+EOF
+```
+##### Start mysql to join the cluster
+```
+systemctl start mysql
+```
